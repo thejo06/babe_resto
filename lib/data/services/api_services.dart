@@ -17,11 +17,13 @@ class ApiServices {
     }
   }
 
-  Future<dynamic> getRestaurantDetail(String id) async {
+  Future<RestaurantDetail> getRestaurantDetail(String id) async {
     var url = '$_baseUrl/detail/$id';
     final _response = await http.get(Uri.parse(url));
+    var data = json.decode(_response.body);
+    print(data['restaurant']['menus']);
     if (_response.statusCode == 200) {
-      return RestaurantDetailItem.fromJson(json.decode(_response.body));
+      return RestaurantDetail.fromJson(json.decode(_response.body));
     } else {
       throw Exception('Gagal Memuat Data');
     }

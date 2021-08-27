@@ -25,6 +25,8 @@ class RestaurantListProvider extends ChangeNotifier {
       final restaurant = await apiService.getRestaurantList();
       if (restaurant.restaurants.isEmpty) {
         _state = ResultState.NoData;
+        notifyListeners();
+        return _message = 'Gagal Mendapatkan Data';
       } else {
         _state = ResultState.HasData;
         notifyListeners();

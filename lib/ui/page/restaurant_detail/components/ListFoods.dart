@@ -1,15 +1,91 @@
-// import 'package:babe_resto/common/styles.dart';
-// import 'package:babe_resto/data/models/restaurant_detail.dart';
-// import 'package:babe_resto/provider/restaurant_detail_provider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:babe_resto/common/styles.dart';
+import 'package:babe_resto/data/models/screenArgs.dart';
+import 'package:babe_resto/provider/restaurant_detail_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-// class ListFoods extends StatelessWidget {
-//   final RestaurantDetailItem restaurantFoods;
+class ListOfFoods extends StatelessWidget {
+  const ListOfFoods({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
 
-//   ListFoods({required this.restaurantFoods});
-//   @override
-//   Widget build(BuildContext context) {
-//     return 
-//   }
-// }
+  final ScreenArguments args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<RestaurantDetailProvider>(
+      builder: (context, state, _) {
+        if (state.state == ResultState.Loading) {
+          return SliverToBoxAdapter(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (state.state == ResultState.HasData) {
+          return SliverPadding(
+            padding:
+                EdgeInsets.symmetric(horizontal: defaultPadding, vertical: 10),
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final item =
+                      state.restaurantDetail.restaurant.menus.foods[index];
+                  return Stack(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              'assets/images/foods.jpg',
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(4),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: greyColor.withOpacity(0.7),
+                        ),
+                        child: Text(
+                          item.name,
+                          style: bodyTextMenu,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                childCount:
+                    state.restaurantDetail.restaurant.menus.foods.length,
+              ),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 150,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 2.0,
+              ),
+            ),
+          );
+        } else if (state.state == ResultState.NoData) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else if (state.state == ResultState.Error) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else {
+          return Center(
+            child: Text(''),
+          );
+        }
+      },
+    );
+  }
+}

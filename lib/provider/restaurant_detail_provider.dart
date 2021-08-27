@@ -24,7 +24,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
       _state = ResultState.Loading;
       notifyListeners();
       final restaurantDetail = await apiService.getRestaurantDetail(id);
-      if (restaurantDetail.restaurant.isEmpty) {
+      if (restaurantDetail.error) {
         _state = ResultState.NoData;
         notifyListeners();
         return _message = 'Gagal Mendapatkan Data';
@@ -34,6 +34,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
         return _restaurantDetail = restaurantDetail;
       }
     } catch (e) {
+      print(e);
       _state = ResultState.Error;
       notifyListeners();
       return _message = 'Error --> $e';
