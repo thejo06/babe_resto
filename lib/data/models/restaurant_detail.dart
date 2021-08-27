@@ -13,7 +13,7 @@ class RestaurantDetail {
       RestaurantDetail(
         error: json["error"],
         message: json["message"],
-        restaurant: RestaurantDetailItem.fromJson(json["restaurant"]),
+        restaurant: RestaurantDetailItem.fromJson((json["restaurant"])),
       );
 }
 
@@ -49,7 +49,7 @@ class RestaurantDetailItem {
         description: json["description"],
         city: json["city"],
         address: json["address"],
-        pictureId: json["pictureId"],
+        pictureId: json["pictureId"] ?? "",
         categories: List<Category>.from(
             json["categories"].map((x) => Category.fromJson(x))),
         menus: Menus.fromJson(json["menus"]),
@@ -67,7 +67,7 @@ class Category {
   String name;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        name: json["name"],
+        name: json["name"] ?? "",
       );
 }
 
@@ -99,7 +99,9 @@ class Menus {
   List<Drinks> drinks;
 
   factory Menus.fromJson(Map<String, dynamic> json) => Menus(
-        foods: List<Foods>.from(json["foods"].map((x) => Foods.fromJson(x))),
+        foods: List<Foods>.from(
+          json["foods"].map((x) => Foods.fromJson(x)),
+        ),
         drinks:
             List<Drinks>.from(json["drinks"].map((x) => Drinks.fromJson(x))),
       );
@@ -113,7 +115,7 @@ class Foods {
   String name;
 
   factory Foods.fromJson(Map<String, dynamic> json) => Foods(
-        name: json["name"],
+        name: json["name"] ?? "",
       );
 }
 
@@ -125,6 +127,6 @@ class Drinks {
   String name;
 
   factory Drinks.fromJson(Map<String, dynamic> json) => Drinks(
-        name: json["name"],
+        name: json["name"] ?? "",
       );
 }

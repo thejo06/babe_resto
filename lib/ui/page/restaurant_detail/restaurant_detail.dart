@@ -145,8 +145,8 @@ class RestaurantDetailPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final item = state
                             .restaurantDetail.restaurant.menus.foods[index];
-                        return ListTile(
-                          leading: Text(item.name),
+                        return Container(
+                          child: Text(item.name),
                         );
                       });
                 } else if (state.state == ResultState.NoData) {

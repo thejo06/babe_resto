@@ -21,7 +21,7 @@ class ApiServices {
     var url = '$_baseUrl/detail/$id';
     final _response = await http.get(Uri.parse(url));
     if (_response.statusCode == 200) {
-      return RestaurantDetail.fromJson(json.decode(_response.body));
+      return RestaurantDetailItem.fromJson(json.decode(_response.body));
     } else {
       throw Exception('Gagal Memuat Data');
     }
